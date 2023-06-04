@@ -9,47 +9,50 @@ from itertools import combinations
 from naive_seating import *
 from gradient_ascent_seating import gradient_ascent
 
-
-##
-## CSV Import and Preprocessing
-##
-
-fields = []
-rows = []
-with open("wedding_seating_arrangements.csv", 'r') as f:
-    csvreader = csv.reader(f)
-    fields = next(csvreader)
-    
-    for row in csvreader:
-        rows.append(row)
-    
-    graph = {}
-    for row in rows:
-        graph[row[0]] = []
-        for col in range(1,len(row)):
-            if row[col]:
-                graph[row[0]].append(fields[col])
-
-g = networkx.Graph()
-
-for k, vs in graph.items():
-    for v in vs:
-        g.add_edge(k, v)
-
-# Compute number of neighbors per node
-neighbor_dict = {}
-for i in g.nodes:
-    num = 0
-    for j in g.neighbors(i):
-        num += 1
-    neighbor_dict[i] = num
-
-# Sort by number of neighbors
-neighbor_dict = dict(sorted(neighbor_dict.items(), key=lambda item: item[1]))
-# for i in neighbor_dict.items():
-    # print(i)
-
 def main():
+
+    ##
+    ## CSV Import and Preprocessing
+    ##
+
+    fields = []
+    rows = []
+    with open("wedding_seating_arrangements.csv", 'r') as f:
+        csvreader = csv.reader(f)
+        fields = next(csvreader)
+        
+        for row in csvreader:
+            rows.append(row)
+        
+        graph = {}
+        for row in rows:
+            graph[row[0]] = []
+            for col in range(1,len(row)):
+                if row[col]:
+                    graph[row[0]].append(fields[col])
+
+    g = networkx.Graph()
+
+    for k, vs in graph.items():
+        for v in vs:
+            g.add_edge(k, v)
+
+    # Compute number of neighbors per node
+    neighbor_dict = {}
+    for i in g.nodes:
+        num = 0
+        for j in g.neighbors(i):
+            num += 1
+        neighbor_dict[i] = num
+
+    # Sort by number of neighbors
+    neighbor_dict = dict(sorted(neighbor_dict.items(), key=lambda item: item[1]))
+    # for i in neighbor_dict.items():
+        # print(i)
+
+    ##
+    ## Evaluate algorithms
+    ##
     
     # print("Evaluating naive algorithm...")
     # best_tables = []
@@ -86,12 +89,12 @@ def main():
     print("Evaluating gradient ascent algorithm for long tables...")
     best_tables = []
     best_score = 0
-    for i in range(20):
-        score, tables = gradient_ascent(100, 2, 18, g, neighbor_dict, 1)
+    for i in range(1):
+        score, tables = gradient_ascent(200, 2, 26, g, neighbor_dict, 1)
         if score > best_score:
             best_tables = tables
             best_score = score
-        print("Iteration " + str(i) + ", Score: " + str(score))
+        print("Run " + str(i) + ", Score: " + str(score))
 
     print("Final Score: " + str(best_score))
     print(best_tables)
