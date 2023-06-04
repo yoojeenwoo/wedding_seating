@@ -25,17 +25,19 @@ def main():
             rows.append(row)
         
         graph = {}
+        weights = {}
         for row in rows:
             graph[row[0]] = []
             for col in range(1,len(row)):
                 if row[col]:
                     graph[row[0]].append(fields[col])
+                    weights[tuple(sorted((row[0], fields[col])))] = int(row[col])
 
     g = networkx.Graph()
 
     for k, vs in graph.items():
         for v in vs:
-            g.add_edge(k, v)
+            g.add_edge(k, v, weight=weights[tuple(sorted((k,v)))])
 
     # Compute number of neighbors per node
     neighbor_dict = {}

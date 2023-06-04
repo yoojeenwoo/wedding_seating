@@ -11,20 +11,20 @@ def compute_score(g, tables, arrangement):
         for table in tables:
             for comb in combinations(table,2):
                 if g.has_edge(comb[0], comb[1]):
-                    score += 1
+                    score += g[comb[0]][comb[1]]["weight"]
     elif arrangement == 1:
         for table in tables:
             for i in range(len(table)-1):
                 if g.has_edge(table[i][0], table[i][1]):
-                    score += 1
+                    score += g[table[i][0]][table[i][1]]["weight"]
                 if g.has_edge(table[i][0], table[i+1][0]):
-                    score += 2
+                    score += 2*g[table[i][0]][table[i+1][0]]["weight"]
                 if g.has_edge(table[i][0], table[i+1][1]):
-                    score += 1
+                    score += g[table[i][0]][table[i+1][1]]["weight"]
                 if g.has_edge(table[i][1], table[i+1][0]):
-                    score += 1
+                    score += g[table[i][1]][table[i+1][0]]["weight"]
                 if g.has_edge(table[i][1], table[i+1][1]):
-                    score += 2
+                    score += 2*g[table[i][1]][table[i+1][1]]["weight"]
 
     return score
 
@@ -36,28 +36,28 @@ def compute_local_score(g, tables, tdx, rdx, arrangement):
     if arrangement == 0:
         for comb in combinations(tables[tdx], 2):
             if g.has_edge(comb[0], comb[1]):
-                score += 1
+                score += g[comb[0]][comb[1]]["weight"]
     elif arrangement == 1:
         if g.has_edge(tables[tdx][rdx][0], tables[tdx][rdx][1]):
-            score += 1
+            score += g[tables[tdx][rdx][0]][tables[tdx][rdx][1]]["weight"]
         if rdx < len(tables[tdx])-1:
             if g.has_edge(tables[tdx][rdx][0], tables[tdx][rdx+1][0]):
-                score += 2
+                score += 2*g[tables[tdx][rdx][0]][tables[tdx][rdx+1][0]]["weight"]
             if g.has_edge(tables[tdx][rdx][0], tables[tdx][rdx+1][1]):
-                score += 1
+                score += g[tables[tdx][rdx][0]][tables[tdx][rdx+1][1]]["weight"]
             if g.has_edge(tables[tdx][rdx][1], tables[tdx][rdx+1][0]):
-                score += 1
+                score += g[tables[tdx][rdx][1]][tables[tdx][rdx+1][0]]["weight"]
             if g.has_edge(tables[tdx][rdx][1], tables[tdx][rdx+1][1]):
-                score += 2
+                score += 2*g[tables[tdx][rdx][1]][tables[tdx][rdx+1][1]]["weight"]
         if rdx > 0:
             if g.has_edge(tables[tdx][rdx][0], tables[tdx][rdx-1][0]):
-                score += 2
+                score += 2*g[tables[tdx][rdx][0]][tables[tdx][rdx-1][0]]["weight"]
             if g.has_edge(tables[tdx][rdx][0], tables[tdx][rdx-1][1]):
-                score += 1
+                score += g[tables[tdx][rdx][0]][tables[tdx][rdx-1][1]]["weight"]
             if g.has_edge(tables[tdx][rdx][1], tables[tdx][rdx-1][0]):
-                score += 1
+                score += g[tables[tdx][rdx][1]][tables[tdx][rdx-1][0]]["weight"]
             if g.has_edge(tables[tdx][rdx][1], tables[tdx][rdx-1][1]):
-                score += 2
+                score += 2*g[tables[tdx][rdx][1]][tables[tdx][rdx-1][1]]["weight"]
 
     return score
 
